@@ -6,20 +6,30 @@ BluetoothSerial SerialBT;
 String buttonState = "OFF";
 
 // DRV8833
+#define BIN1 32
+#define BIN2 33
 #define AIN1 26
 #define AIN2 27
 #define STBY 25
 
-void motorForward(int speed) {
+void left_MotorForward(int speed) {
   analogWrite(AIN1, speed);
   analogWrite(AIN2, 0);
 }
 
-void motorStop() {
+void left_MotorStop() {
   analogWrite(AIN1, 0);
   analogWrite(AIN2, 0);
 }
+void right_MotorForward(int speed) {
+  analogWrite(BIN1, speed);
+  analogWrite(BIN2, 0);
+}
 
+void right_MotorStop() {
+  analogWrite(BIN1, 0);
+  analogWrite(BIN2, 0);
+}
 void setup() {
 
   Serial.begin(115200);
@@ -33,8 +43,8 @@ void setup() {
 
   pinMode(AIN1, OUTPUT);
   pinMode(AIN2, OUTPUT);
-  motorStop();
-
+  right_MotorStop();
+  left_MotorStop();
 
 
   // =====================
@@ -74,7 +84,8 @@ void loop() {
       buttonState = "ON";
 
       // 正転
-      motorForward(200);
+      left_MotorForward(200);
+      right_MotorForward(200);
 
     }
     else if (data == "0") {
@@ -82,15 +93,11 @@ void loop() {
       buttonState = "OFF";
 
       // 停止
-      motorStop();
+      right_MotorStop();
+      left_MotorStop();
+
 
     }
-
-
-    // =====================
-    // TFT更新
-    // =====================
   }
-
   delay(10);
 }
