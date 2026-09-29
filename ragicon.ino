@@ -88,7 +88,7 @@ void loop() {
       right_MotorForward(200);
 
     }
-    else if (data == "0") {
+    else {
 
       buttonState = "OFF";
 
