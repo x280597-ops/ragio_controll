@@ -1,0 +1,63 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+#define BUTTON_PIN 25
+
+// RC_CARのMAC
+uint8_t receiverAddress[] = {
+  0x30, 0x76, 0xF5, 0xAF, 0xFC, 0x72
+};
+
+void setup() {
+
+  Serial.begin(115200);
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  // ★ true = Master
+  if (!SerialBT.begin("RC_CONTROLLER", true)) {
+    Serial.println("Bluetooth開始失敗");
+    return;
+  }
+
+  Serial.println("Bluetooth Classic 送信側 起動");
+
+  delay(1000);
+
+  Serial.println("RC_CARへ接続中...");
+
+  bool result = SerialBT.connect(receiverAddress);
+
+  if (result) {
+    Serial.println("接続成功！");
+  }
+  else {
+    Serial.println("接続失敗！");
+  }
+}
+
+void loop() {
+
+  if (SerialBT.connected()) {
+
+    int buttonState = digitalRead(BUTTON_PIN);
+
+    if (buttonState == HIGH) {
+      SerialBT.println("1");
+      Serial.println("送信: 1");
+    }
+    else {
+      SerialBT.println("0");
+      Serial.println("送信: 0");
+    }
+
+  }
+  else {
+
+    Serial.println("Bluetooth未接続");
+
+  }
+
+  delay(500);
+}
