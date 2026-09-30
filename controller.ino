@@ -6,9 +6,9 @@ BluetoothSerial SerialBT;
 // ボタン
 // =====================
 
-#define BUTTON_FORWARD   25
+#define BUTTON_FORWARD   27
 #define BUTTON_BACK      26
-#define BUTTON_LEFT      27
+#define BUTTON_LEFT      25
 #define BUTTON_RIGHT     32
 
 
@@ -81,7 +81,7 @@ void loop() {
 
   if (digitalRead(BUTTON_FORWARD) == LOW) {
 
-    SerialBT.println("1");
+    SerialBT.println("F");
     Serial.println("前進");
 
   }
